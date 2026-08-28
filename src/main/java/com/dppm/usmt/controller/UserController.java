@@ -54,9 +54,9 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public Mono<ResponseEntity<Void>> delete(@PathVariable Long id) {
+    public Mono<ResponseEntity<String>> delete(@PathVariable Long id) {
         return userService.deleteById(id)
-                .thenReturn(ResponseEntity.noContent().<Void>build());
+                .thenReturn(ResponseEntity.ok("User deleted successfully."));
     }
 
     private UserResponse toResponse(User user) {
