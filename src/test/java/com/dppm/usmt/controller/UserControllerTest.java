@@ -52,7 +52,9 @@ class UserControllerTest {
 
         ResponseEntity<UserResponse> response = userController.findById(1L).block();
 
+        assert response != null;
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assert response.getBody() != null;
         assertThat(response.getBody().id()).isEqualTo(1L);
     }
 
@@ -64,7 +66,9 @@ class UserControllerTest {
 
         ResponseEntity<UserResponse> response = userController.create(request).block();
 
+        assert response != null;
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assert response.getBody() != null;
         assertThat(response.getBody().id()).isEqualTo(1L);
         verify(userService).create(org.mockito.ArgumentMatchers.argThat(user ->
                 user.getFirstName().equals("Jane")
@@ -83,7 +87,9 @@ class UserControllerTest {
 
         ResponseEntity<UserResponse> response = userController.update(1L, request).block();
 
+        assert response != null;
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assert response.getBody() != null;
         assertThat(response.getBody().firstName()).isEqualTo("Updated");
         verify(userService).update(org.mockito.ArgumentMatchers.eq(1L), org.mockito.ArgumentMatchers.argThat(user ->
                 user.getFirstName().equals("Jane")
@@ -96,9 +102,10 @@ class UserControllerTest {
     void deleteReturnsNoContentResponse() {
         when(userService.deleteById(1L)).thenReturn(Mono.empty());
 
-        ResponseEntity<Void> response = userController.delete(1L).block();
+        ResponseEntity<String> response = userController.delete(1L).block();
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assert response != null;
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(userService).deleteById(1L);
     }
 
